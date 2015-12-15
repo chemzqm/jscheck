@@ -4,7 +4,7 @@ A vim plugin for checking javascript syntax error only.
 
 It's build for speed, almost 6x faster than [eslint](https://github.com/eslint/eslint) on my machine.
 
-[![faster(http://7b1fyu.com1.z0.glb.clouddn.com/time.png?imageView2/0/w/600)](http://7b1fyu.com1.z0.glb.clouddn.com/time.png)
+[![faster](http://7b1fyu.com1.z0.glb.clouddn.com/time.png?imageView2/0/w/600)](http://7b1fyu.com1.z0.glb.clouddn.com/time.png)
 
 It uses notifies functions from [syntastic](https://github.com/scrooloose/syntastic), the result looks like:
 
