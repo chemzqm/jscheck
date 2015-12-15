@@ -1,0 +1,46 @@
+#! /usr/bin/env node
+
+var program = require('commander');
+var check = require('..');
+var fs = require('fs');
+
+program
+  .version(require('../package.json').version)
+  .usage('syntax-check fileA fileB')
+  .parse(process.argv);
+
+var files = program.args;
+
+files.forEach(function (file) {
+  fs.stat(file, function (e, stats) {
+    if (e) throw e;
+    if (!stats.isFile()) return;
+    fs.readFile(file, 'utf8', function (error ,src) {
+      if (error) throw error;
+      var err = check(src);
+      if (err) output(err, file)
+    })
+  })
+})
+
+if (!files.length) {
+  stdin()
+}
+
+function stdin() {
+  var buf = ''
+  process.stdin.setEncoding('utf8')
+  process.stdin.on('data', function(chunk){ buf += chunk })
+  process.stdin.on('end', function(){
+    var err = check(buf)
+    output(err, 'stdin')
+  }).resume()
+}
+
+var util = require('util')
+function output (err, file) {
+  if (!err) return
+  var str = util.format('%s:%s:%s:%s',
+    file, err.line, err.column, err.message)
+  console.log(str)
+}
