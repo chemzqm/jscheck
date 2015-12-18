@@ -24,22 +24,19 @@ if !executable(s:jscheck)
 endif
 
 function! s:CheckCurrentFile()
-  if (&filetype != 'javascript') | return | endif
+  if (&filetype !=# 'javascript') | return | endif
   let lines = getline(1, '$')
   let res = system(s:jscheck, lines)
-  if v:shell_error && res != ""
+  if v:shell_error && res !=# ""
     call s:ShowError(res)
     return
   endif
   let list = map(split(res, '\n'), 's:Format(v:val)')
-  if !len(list) | return | endif
-
   " errorformat
   let old_local_errorformat = &l:errorformat
   let old_errorformat = &errorformat
   let &errorformat = s:errorformat
   let &l:errorformat = s:errorformat
-
   silent lexpr list
   let rawlist = getloclist(0)
   let &l:errorformat = old_local_errorformat
@@ -81,7 +78,7 @@ function! s:InstallDependencies()
         let old_cwd = getcwd()
         execute 'cd ' . s:folder
         let output = system('npm install')
-        if v:shell_error && output != ""
+        if v:shell_error && output !=# ""
           call s:ShowError(output)
           return
         endif

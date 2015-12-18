@@ -29,9 +29,11 @@ then install：
     :so ~/.vimrc
     :BundleInstall
 
-You have to empty the javascript checker of syntastic to avoid syntastic check on file save:
+You have to disable auto check of syntastic for syntastic to avoid syntastic check on file save:
 
-    let g:syntastic_javascript_checkers = []
+    let g:syntastic_mode_map = {
+        \ "mode": "active",
+        \ "passive_filetypes": ["javascript"] }
 
 The plugin will prompt you to install the node dependencies only if they are not installed.
 
