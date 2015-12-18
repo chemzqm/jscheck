@@ -12,7 +12,6 @@ let g:jscheck_loaded = 1
 
 let s:jscheck = expand('<sfile>:h:h').'/bin/check'
 let s:folder = expand('<sfile>:h:h')
-let s:errorformat = '%E%f|%l col %c Error|%m'
 
 function! s:ShowError(msg)
   echohl ErrorMsg | echon a:msg
@@ -31,16 +30,10 @@ function! s:CheckCurrentFile()
     call s:ShowError(res)
     return
   endif
-  let list = map(split(res, '\n'), 's:Format(v:val)')
-  " errorformat
-  let old_local_errorformat = &l:errorformat
-  let old_errorformat = &errorformat
-  let &errorformat = s:errorformat
-  let &l:errorformat = s:errorformat
-  silent lexpr list
+  let list = map(split(res, '\n'), 's:Parse(v:val)')
+  call setloclist(winnr(), list, 'r')
+  "lexpr list
   let rawlist = getloclist(0)
-  let &l:errorformat = old_local_errorformat
-  let &errorformat = old_errorformat
 
   call s:ShowNotifier(rawlist)
 endfunction
@@ -62,10 +55,15 @@ function! s:ShowNotifier(rawlist)
   endif
 endfunction
 
-function! s:Format(line)
+function! s:Parse(line)
   let item = split(a:line, ':')
-  return printf('%s|%d col %d Error|%s',
-    \ bufname('%'), item[1], item[2], item[3])
+  let nr = bufnr('%')
+  return {'bufnr': nr,
+        \ 'lnum' : item[1],
+        \ 'col'  : item[2],
+        \ 'text' : item[3],
+        \ 'type' : 'E',
+        \ }
 endfunction
 
 function! s:InstallDependencies()
