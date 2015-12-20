@@ -32,9 +32,7 @@ function! s:CheckCurrentFile()
   endif
   let list = map(split(res, '\n'), 's:Parse(v:val)')
   call setloclist(winnr(), list, 'r')
-  "lexpr list
   let rawlist = getloclist(0)
-
   call s:ShowNotifier(rawlist)
 endfunction
 
