@@ -5,7 +5,7 @@
 " Version: 0.1
 " ============================================================================
 
-if exists('g:jscheck_loaded') && !get(g:, 'jscheck_debug_mode', 0)
+if exists('g:jscheck_loaded')
     finish
 endif
 let g:jscheck_loaded = 1
@@ -89,7 +89,7 @@ command! -nargs=0 JSCheck :call s:CheckCurrentFile ()
 
 augroup jscheck
   autocmd!
-  if !exists('g:jscheck_no_autocheck') || get(g:, 'g:jscheck_no_autocheck', 0)
+  if !get(g:, 'g:jscheck_no_autocheck', 0)
     autocmd BufWritePost * :call s:CheckCurrentFile()
   endif
   autocmd VimEnter * :call s:InstallDependencies()
