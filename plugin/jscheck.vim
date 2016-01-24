@@ -41,13 +41,13 @@ function! s:ShowNotifier(rawlist)
     let loclist = g:SyntasticLoclist.New(a:rawlist)
     let b:syntastic_loclist = loclist
     call g:SyntasticSignsNotifier.refresh(loclist)
-    if exists('g:SyntasticCursorNotifier')
+    if exists('g:SyntasticCursorNotifier') && get(g:, 'syntastic_echo_current_error', 1)
       call g:SyntasticCursorNotifier.refresh(loclist)
     endif
-    if exists('g:SyntasticBalloonsNotifier')
+    if exists('g:SyntasticBalloonsNotifier') && get(g:, 'syntastic_enable_balloons', 1)
       call g:SyntasticBalloonsNotifier.refresh(loclist)
     endif
-    if exists('g:SyntasticHighlightingNotifier')
+    if exists('g:SyntasticHighlightingNotifier') && get(g:, 'syntastic_enable_highlighting', 1)
       call g:SyntasticHighlightingNotifier.refresh(loclist)
     endif
   endif
