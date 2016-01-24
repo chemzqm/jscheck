@@ -37,7 +37,7 @@ function! s:CheckCurrentFile()
 endfunction
 
 function! s:ShowNotifier(rawlist)
-  if exists('g:SyntasticSignsNotifier')
+  if exists('g:SyntasticSignsNotifier') && get(g:, 'syntastic_enable_signs', 1)
     let loclist = g:SyntasticLoclist.New(a:rawlist)
     let b:syntastic_loclist = loclist
     call g:SyntasticSignsNotifier.refresh(loclist)
